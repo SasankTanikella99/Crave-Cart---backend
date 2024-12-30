@@ -34,6 +34,8 @@ app.get('/test', async(req: Request, res: Response) => {
 app.use("/api/my/user", userRoutes);
 app.use("/api/my/restaurant", restaurantRoutes)
 
-app.listen(8747, () => {
-    console.log('Server is running on port 8747')
-})
+const port = process.env.PORT ? parseInt(process.env.PORT) : 8747;
+
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on port ${port}`);
+});
