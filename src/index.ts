@@ -3,15 +3,24 @@ import cors from 'cors'
 import 'dotenv/config'
 import mongoose from 'mongoose'
 import userRoutes from './routes/userRoutes'
+import restaurantRoutes from './routes/restaurantRoutes'
+import { v2 as cloudinary } from 'cloudinary';
 
 // database connect
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(() => {
     console.log('Connected to MongoDB')
 })
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET_KEY
+})
+
 const app = express()
 app.use(cors())
-app.use(express.json())
+app.use(express.json()); // To parse application/json
+app.use(express.urlencoded({ extended: true })); // To parse application/x-www-form-urlencoded
 
 app.get('/health-check', async (req: Request, res: Response) => {
   res.send({message: 'Health Check, OK!'})
@@ -23,6 +32,7 @@ app.get('/test', async(req: Request, res: Response) => {
 })
 
 app.use("/api/my/user", userRoutes);
+app.use("/api/my/restaurant", restaurantRoutes)
 
 app.listen(8747, () => {
     console.log('Server is running on port 8747')
