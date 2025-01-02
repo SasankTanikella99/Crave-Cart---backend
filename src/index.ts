@@ -5,6 +5,7 @@ import mongoose from 'mongoose'
 import userRoutes from './routes/userRoutes'
 import restaurantRoutes from './routes/restaurantRoutes'
 import { v2 as cloudinary } from 'cloudinary';
+import allRestaurantsRoutes from './routes/allRestaurantsRoutes'
 
 // database connect
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string).then(() => {
@@ -33,6 +34,7 @@ app.get('/test', async(req: Request, res: Response) => {
 
 app.use("/api/my/user", userRoutes);
 app.use("/api/my/restaurant", restaurantRoutes)
+app.use("/api/restaurants", allRestaurantsRoutes)
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 8747;
 
